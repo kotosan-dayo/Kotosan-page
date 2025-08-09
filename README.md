@@ -1,3 +1,2 @@
 # Kotosan-pageとは
-Twitter（X）Kotosan_dayoのホームページです
-90年代にありそうな感じのサイトです
+Twitter（X）Kotosan_dayoのホームページで90年代にありそうな雰囲気のサイトです
