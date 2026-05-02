@@ -1,106 +1,775 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>あなたのウェブサイト</title>
-    <link rel="stylesheet" href="style.css">
+    <title>kotosan_dayoのホームページ</title>
+    <meta name="description" content="ガジェットやゲームが大好きな中学生、ことさんのホームページ。">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            /* 共通カラー */
+            --primary: #31313b;
+            --primary-hover: #4a4957;
+            --secondary: #6b7280;
+            --btn-text: #ffffff;
+
+            /* ライトモード (白基調) */
+            --bg-gradient: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%);
+            --bg-color: #ffffff;
+            --text-main: #000000;
+            --text-muted: #4b5563;
+            --card-bg: rgba(255, 255, 255, 0.7);
+            --card-border: rgba(0, 0, 0, 0.1);
+            --nav-bg: rgba(255, 255, 255, 0.8);
+            --shadow: 0 8px 32px rgba(31, 38, 135, 0.07);
+        }
+
+        :root[data-theme="dark"] {
+            /* ダークモード (黒基調) */
+            --primary: #e2e8f0;
+            --primary-hover: #ffffff;
+            --secondary: #9ca3af;
+            --btn-text: #000000;
+
+            --bg-gradient: linear-gradient(135deg, #000000 0%, #111827 100%);
+            --bg-color: #000000;
+            --text-main: #ffffff;
+            --text-muted: #9ca3af;
+            --card-bg: rgba(30, 41, 59, 0.6);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --nav-bg: rgba(0, 0, 0, 0.8);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            background: var(--bg-color);
+            background-image: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* 背景の装飾的なぼかし円 */
+        .bg-blob {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            z-index: -1;
+            opacity: 0.5;
+            animation: float 10s infinite ease-in-out alternate;
+        }
+
+        .blob-1 {
+            width: 400px;
+            height: 400px;
+            background: rgba(47, 47, 48, 0.3);
+            top: -100px;
+            left: -100px;
+        }
+
+        .blob-2 {
+            width: 500px;
+            height: 500px;
+            background: rgba(146, 144, 145, 0.2);
+            bottom: -200px;
+            right: -100px;
+            animation-delay: -5s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            100% {
+                transform: translate(50px, 50px) scale(1.1);
+            }
+        }
+
+        /* ナビゲーション */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 64px;
+            background: var(--nav-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--card-border);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+        }
+
+        .nav-links a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            right: 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-main);
+        }
+
+        .theme-toggle:hover {
+            background: rgba(128, 128, 128, 0.2);
+        }
+
+        .theme-toggle .icon-sun {
+            display: none;
+        }
+
+        .theme-toggle .icon-moon {
+            display: block;
+        }
+
+        :root[data-theme="dark"] .theme-toggle .icon-sun {
+            display: block;
+        }
+
+        :root[data-theme="dark"] .theme-toggle .icon-moon {
+            display: none;
+        }
+
+        /* セクション共通 */
+        section {
+            padding: 100px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 36px;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 48px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            width: 100%;
+        }
+
+        /* ヒーローセクション */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding-top: 64px;
+            /* nav height */
+        }
+
+        .hero h1 {
+            font-size: 64px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 24px;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin-bottom: 40px;
+            font-weight: 500;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 32px;
+            border-radius: 50px;
+            background: var(--primary);
+            color: var(--btn-text);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 14px rgba(93, 93, 109, 0.4);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(90, 90, 99, 0.6);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-main);
+            border: 2px solid var(--primary);
+            box-shadow: none;
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: var(--btn-text);
+            box-shadow: 0 4px 14px rgba(34, 34, 36, 0.4);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+        }
+
+        /* グラスモーフィズムカード */
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        /* お知らせセクション */
+        .news-list {
+            list-style: none;
+        }
+
+        .news-list li {
+            padding: 16px 0;
+            border-bottom: 1px solid var(--card-border);
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .news-list li:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .news-date {
+            font-size: 14px;
+            color: var(--primary);
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 480px) {
+            .news-list li {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+
+        /* プロフィールセクション */
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .profile-card h3 {
+            font-size: 20px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .profile-card ul {
+            list-style: none;
+            color: var(--text-muted);
+        }
+
+        .profile-card ul li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .profile-card ul li::before {
+            content: "•";
+            color: var(--primary);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        /* 布陣（機材）セクション */
+        .gear-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 32px;
+        }
+
+        .gear-category {
+            margin-bottom: 24px;
+        }
+
+        .gear-category h3 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--card-border);
+            padding-bottom: 8px;
+        }
+
+        .server-specs {
+            margin-top: 16px;
+            background: rgba(0, 0, 0, 0.03);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        :root[data-theme="dark"] .server-specs {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .server-specs dl {
+            display: grid;
+            grid-template-columns: 80px 1fr;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .server-specs dt {
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .server-specs dd {
+            color: var(--text-muted);
+        }
+
+        /* リンク・ツールセクション */
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+        }
+
+        .link-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text-main);
+            gap: 12px;
+            padding: 40px 24px;
+        }
+
+        .link-card:hover {
+            color: var(--primary);
+        }
+
+        .link-icon {
+            font-size: 40px;
+            margin-bottom: 8px;
+        }
+
+        /* アニメーション用クラス */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .delay-1 {
+            transition-delay: 0.1s;
+        }
+
+        .delay-2 {
+            transition-delay: 0.2s;
+        }
+
+        .delay-3 {
+            transition-delay: 0.3s;
+        }
+
+        /* フッター */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+            border-top: 1px solid var(--card-border);
+            margin-top: 40px;
+            font-size: 14px;
+        }
+
+        /* レスポンシブ */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 48px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            /* スマホではシンプルに非表示かハンバーガーにする */
+            .section-title {
+                font-size: 28px;
+            }
+
+            .social-links {
+                flex-direction: column;
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
+
 <body>
-   
- <header class="header">
-        <div class="container">
-            <h1 class="site-title">ことさんのホームページ（β版）</h1>
-            <nav class="nav">
 
-<h2>アクセスカウンター（開発:ななしぃ様）</h2>
-<a href="https://counter.nanasi-rasi.net/index.html" target="_blank" rel="noopener noreferrer" class="social-link ななしぃ"</a></li>
-  <span>→カウンター配布ページ</span>
-</a>
-                </ul>
-            </nav>
+    <!-- 背景装飾 -->
+    <div class="bg-blob blob-1"></div>
+    <div class="bg-blob blob-2"></div>
+
+    <!-- ナビゲーション -->
+    <nav>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#news">News</a>
+            <a href="#profile">Profile</a>
+            <a href="#team">Gears</a>
+            <a href="#links">Links & Tools</a>
         </div>
-    </header>
+        <button id="theme-toggle" aria-label="テーマ切り替え" class="theme-toggle">
+            <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+        </button>
+    </nav>
 
-
-<p id="count"></p>
-<script src="https://counter.nanasi-rasi.net/counter.js"></script>
-
-<h1>リンク</h1>                  
-<a href="https://twitter.com/kotosan_dayo" target="_blank" rel="noopener noreferrer" class="social-link twitter-link"</a></li>
-  <span>Twitter（X）メイン</span>
-</a>
-                </ul>
-            </nav>
+    <!-- ヒーローセクション -->
+    <section id="home" class="hero">
+        <h1 class="fade-in">kotosan_dayo</h1>
+        <p class="fade-in delay-1">ガジェット,ゲームなどが好きな高校生！！</p>
+        <div class="social-links fade-in delay-2">
+            <a href="https://twitter.com/kotosan_dayo" target="_blank" class="btn">𝕏 メインアカウント (@kotosan_dayo)</a>
+            <a href="#news" class="btn btn-outline">お知らせを見る ↓</a>
         </div>
-    </header>
-    
-    <main class="main">
-        <div class="container">
-            <section class="section">
-<a href="https://twitter.com/kotosan_dane" target="_blank" rel="noopener noreferrer" class="social-link twitter-link"</a></li>
-  <span>Twitter（X）サブ兼逃げ場</span>
-</a>
-                </ul>
-            </nav>
-        </div>
-    </header>
+    </section>
 
-    <main class="main">
-        <div class="container">
-            <section class="section">
-                <h2>自己紹介</h2>
-                <p>こんにちは！！ことさんです</p>
-                <p>ぼざろ、ペルソナ3、ガジェット好きなただの中学生です</p>
-                <p>よろしくです！！</p>
-                <h2>趣味とか</h2>
-                <p>・好きなゲーム:ペルソナ3リロード，プロセカ，マイクラ，モンハンなどなど</p>
-                <p>・好きなアニメ:ぼっちざろっく，タコピーの原罪などなど</p>
-                <p>・大好きなYouTuberさん:xp2000さん←この方のおかげでパソコンとかに本格的に興味を持ち始めた</p>
-            </section>
-        </div>
-    </main>
-
-      <main class="main">
-        <div class="container">
-            <section class="section">
-              <h2>布陣（2025/8月更新済み）</h2>
-                <p>📱スマホ</p>
-                <p>・メインスマホ:iPhone SE3 64GB</p>
-                <p>・サブスマホ:iPhone XR 64GB</p>
-                <p>💻PC</p>
-                <p>メイン:LAVIEのノートPC（詳しい型番忘れました）
-                <p>ゲーム用:ROG ALLY Z1extreme（初代）</h2>
-                <ul>
-                <p>・NAS 1</p>
+    <!-- お知らせセクション -->
+    <section id="news">
+        <h2 class="section-title fade-in">News</h2>
+        <div class="glass-card fade-in delay-1" style="max-width: 800px; margin: 0 auto;">
+            <ul class="news-list">
+                <li>
+                    <span class="news-date">2026/05/01</span>
+                    <span class="news-content">新ページ公開に伴い旧ページ（ver.1,ver.2）を公開終了予定です（時期は未定です）</span>
                 </li>
-                <p>CPU:Core i7 3770</p>
-                <p>RAM:8GB</p>
-                <p>HDD:500ぐらい×2，1TB（外付け）</p>
-                <p>OS:Ubintu server</p>
-                <p>・NAS 2</p>
-                <p>CPU:XEON（詳しい型番忘れました）</p>
-                <p>RAM:16GB</p>
-                <p>HDD:2TB</p>
-                <p>OS:Windows 11 Pro</p>
-            </section>
+                <li>
+                    <span class="news-date">2026/05/01</span>
+                    <span class="news-content">ホームページを大幅にリニューアルしました！</span>
+                </li>
+                <li>
+                    <span class="news-date">2026/04/30</span>
+                    <span class="news-content">kotosan page ver.3 の公開を開始しました。：旧ページからURLが変更されています。</span>
+                </li>
+                <li>
+                    <span class="news-date">2026/04/30</span>
+                    <span
+                        class="news-content">【重大】サブアカウント（＠kotosan_dane）乗っ取りについて：2次被害を防ぐためにブロックをしていただくようお願いいたします。当該アカウントからDMが来ても無視して下さい。（現在、このアカウントに私がログインできなくなっているため）</span>
+                </li>
+            </ul>
         </div>
-    </main>
+    </section>
 
-
-    <main class="main">
-        <div class="container">
-            <section class="section">
-                <h2>このページについて</h2>
-                <p>このページは90年代のテキストベースのホームページをイメージして作りました（ただの技術不足です…)</p>
-            </section>
+    <!-- プロフィールセクション -->
+    <section id="profile">
+        <h2 class="section-title fade-in">Profile（準備中です。。。）</h2>
+        <div class="profile-grid">
+            <div class="glass-card profile-card fade-in delay-1">
+                <h3></h3>
+                <ul>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+            </div>
+            <div class="glass-card profile-card fade-in delay-2">
+                <h3></h3>
+                <ul>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+            </div>
+            <div class="glass-card profile-card fade-in delay-3">
+                <h3></h3>
+                <ul>
+                    <li>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </main>
+    </section>
 
-    <footer class="footer">
-        <div class="container">
-            <p>Developed by kotosan_dayo</div>
+    <!-- 布陣（機材）セクション -->
+    <section id="team">
+        <h2 class="section-title fade-in">布陣</h2>
+        <p style="text-align: center; color: var(--text-muted); margin-top: -32px; margin-bottom: 48px; font-size: 14px;"
+            class="fade-in">2026/5/1 update</p>
+
+        <div class="gear-grid">
+            <!-- スマートフォン -->
+            <div class="glass-card fade-in delay-1">
+                <div class="gear-category" style="margin-bottom: 0;">
+                    <h3>📱 Phone</h3>
+                    <ul>
+                        <li><strong>メイン:</strong>Nothing Phone (2a)</li>
+                        <li><strong>サブ:</strong> iPhone SE3</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- PC -->
+            <div class="glass-card fade-in delay-2">
+                <div class="gear-category" style="margin-bottom: 0;">
+                    <h3>💻 PC</h3>
+                    <ul>
+                        <li><strong>メイン:</strong> LAVIE PC-N1475HAL</li>
+                        <li><strong>ゲーム用:</strong> ROG ALLY Z1 extreme (初代)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 自宅鯖 -->
+            <div class="glass-card fade-in delay-3">
+                <div class="gear-category">
+                    <h3>💾 Koto Server 1 <span
+                            style="font-size:14px; font-weight:normal; color:var(--text-muted);"></span></h3>
+                    <p style="font-size: 14px; color: var(--text-muted);">DELL OptiPlex 9010</p>
+                    <div class="server-specs">
+                        <dl>
+                            <dt>OS</dt>
+                            <dd>ZimaOS</dd>
+                            <dt>CPU</dt>
+                            <dd>Core i7 3770</dd>
+                            <dt>RAM</dt>
+                            <dd>8GB</dd>
+                            <dt>HDD</dt>
+                            <dd>500GB ×2, 1TB (外付け)</dd>
+                            <dt>GPU</dt>
+                            <dd>AMD Caicos XT [Radeon HD 7470/8470 / R5 235/310 OEM]</dd>
+                        </dl>
+                    </div>
+                </div>
+
+                <div class="gear-category" style="margin-top: 32px; margin-bottom: 0;">
+                    <h3>💾 Koto Server 2 <span
+                            style="font-size:14px; font-weight:normal; color:var(--text-muted);"></span></h3>
+                    <p style="font-size: 14px; color: var(--text-muted);">NEC Express 5800/Y53xj</p>
+                    <div class="server-specs">
+                        <dl>
+                            <dt>OS</dt>
+                            <dd>Windows 11 Pro</dd>
+                            <dt>CPU</dt>
+                            <dd>XEON E3-1280 v5</dd>
+                            <dt>RAM</dt>
+                            <dd>16GB</dd>
+                            <dt>HDD</dt>
+                            <dd>2TB</dd>
+                            <dt>GPU</dt>
+                            <dd>Quadro P4000</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- リンク・ツールセクション -->
+    <section id="links">
+        <h2 class="section-title fade-in">Links & Tools</h2>
+        <div class="links-grid">
+            <a href="https://twitter.com/kotosan_dayo" target="_blank" class="glass-card link-card fade-in delay-1">
+                <div class="link-icon">𝕏</div>
+                <h4>メインアカウント</h4>
+                <p style="font-size: 12px; color: var(--text-muted);">@kotosan_dayo</p>
+            </a>
+            <a href="https://twitter.com/kotosan_key" target="_blank" class="glass-card link-card fade-in delay-1">
+                <div class="link-icon">🔒</div>
+                <h4>鍵アカウント</h4>
+                <p>FFさんならほぼ通します！！内通厳禁で！！</p>
+                <p style="font-size: 12px; color: var(--text-muted);">@kotosan_key</p>
+            </a>
+            <a href="https://kotosan-dayo.github.io/tag-counter/" target="_blank"
+                class="glass-card link-card fade-in delay-3">
+                <div class="link-icon">🔢</div>
+                <h4>タグカウンター</h4>
+                <p style="font-size: 12px; color: var(--text-muted);">Webツール</p>
+            </a>
+            <a href="https://kotosan-dayo.github.io/koto-paint/" target="_blank"
+                class="glass-card link-card fade-in delay-3">
+                <div class="link-icon">🎨</div>
+                <h4>Koto paint</h4>
+                <p style="font-size: 12px; color: var(--text-muted);">Webペイントアプリ</p>
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <p>kotosan page ver.3</p>
+        <p>© 2026 kotosan. All rights reserved.</p>
     </footer>
+
+    <!-- スクロールアニメーション用スクリプト -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            document.querySelectorAll('.fade-in').forEach((el) => {
+                observer.observe(el);
+            });
+
+            // テーマ切り替え
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+            const currentTheme = localStorage.getItem("theme");
+
+            // 初期テーマの適用
+            if (currentTheme === "dark") {
+                document.documentElement.setAttribute("data-theme", "dark");
+            } else if (currentTheme === "light") {
+                document.documentElement.setAttribute("data-theme", "light");
+            } else if (prefersDarkScheme.matches) {
+                document.documentElement.setAttribute("data-theme", "dark");
+            } else {
+                document.documentElement.setAttribute("data-theme", "light");
+            }
+
+            // トグルボタンのクリックイベント
+            themeToggleBtn.addEventListener("click", () => {
+                let theme = document.documentElement.getAttribute("data-theme");
+                if (theme === "dark") {
+                    document.documentElement.setAttribute("data-theme", "light");
+                    localStorage.setItem("theme", "light");
+                } else {
+                    document.documentElement.setAttribute("data-theme", "dark");
+                    localStorage.setItem("theme", "dark");
+                }
+            });
+
+            // システムのテーマ変更を検知
+            prefersDarkScheme.addEventListener("change", (e) => {
+                if (!localStorage.getItem("theme")) {
+                    if (e.matches) {
+                        document.documentElement.setAttribute("data-theme", "dark");
+                    } else {
+                        document.documentElement.setAttribute("data-theme", "light");
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
