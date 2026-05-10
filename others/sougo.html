@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>相互リンク - kotosan_dayoのホームページ</title>
+    <meta name="description" content="kotosan_dayoと相互リンクをしていただいている方々のご紹介ページです。">
+    <!-- タブのアイコン（ファビコン） -->
+    <link rel="icon" href="https://github.com/kotosan-dayo/Kotosan-page/blob/main/images/tab%20icon.jpg?raw=true">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            /* 共通カラー */
+            --primary: #31313b;
+            --primary-hover: #4a4957;
+            --secondary: #6b7280;
+            --btn-text: #ffffff;
+
+            /* ライトモード (白基調) */
+            --bg-gradient: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%);
+            --bg-color: #ffffff;
+            --text-main: #000000;
+            --text-muted: #4b5563;
+            --card-bg: rgba(255, 255, 255, 0.7);
+            --card-border: rgba(0, 0, 0, 0.1);
+            --nav-bg: rgba(255, 255, 255, 0.8);
+            --shadow: 0 8px 32px rgba(31, 38, 135, 0.07);
+        }
+
+        :root[data-theme="dark"] {
+            /* ダークモード (黒基調) */
+            --primary: #e2e8f0;
+            --primary-hover: #ffffff;
+            --secondary: #9ca3af;
+            --btn-text: #000000;
+
+            --bg-gradient: linear-gradient(135deg, #000000 0%, #111827 100%);
+            --bg-color: #000000;
+            --text-main: #ffffff;
+            --text-muted: #9ca3af;
+            --card-bg: rgba(30, 41, 59, 0.6);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --nav-bg: rgba(0, 0, 0, 0.8);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            background: var(--bg-color);
+            background-image: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* 背景の装飾的なぼかし円 */
+        .bg-blob {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            z-index: -1;
+            opacity: 0.5;
+            animation: float 10s infinite ease-in-out alternate;
+        }
+
+        .blob-1 {
+            width: 400px;
+            height: 400px;
+            background: rgba(47, 47, 48, 0.3);
+            top: -100px;
+            left: -100px;
+        }
+
+        .blob-2 {
+            width: 500px;
+            height: 500px;
+            background: rgba(146, 144, 145, 0.2);
+            bottom: -200px;
+            right: -100px;
+            animation-delay: -5s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            100% {
+                transform: translate(50px, 50px) scale(1.1);
+            }
+        }
+
+        /* ナビゲーション */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 64px;
+            background: var(--nav-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--card-border);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+        }
+
+        .nav-links a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            right: 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-main);
+        }
+
+        .theme-toggle:hover {
+            background: rgba(128, 128, 128, 0.2);
+        }
+
+        .theme-toggle .icon-sun {
+            display: none;
+        }
+
+        .theme-toggle .icon-moon {
+            display: block;
+        }
+
+        :root[data-theme="dark"] .theme-toggle .icon-sun {
+            display: block;
+        }
+
+        :root[data-theme="dark"] .theme-toggle .icon-moon {
+            display: none;
+        }
+
+        /* セクション共通 */
+        section {
+            padding: 100px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 36px;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 48px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 32px;
+            border-radius: 50px;
+            background: var(--primary);
+            color: var(--btn-text);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 14px rgba(93, 93, 109, 0.4);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(90, 90, 99, 0.6);
+        }
+
+        /* グラスモーフィズムカード */
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        /* リンク・ツールセクション */
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+        }
+
+        .link-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text-main);
+            gap: 12px;
+            padding: 40px 24px;
+        }
+
+        .link-card:hover {
+            color: var(--primary);
+        }
+
+        .link-icon {
+            font-size: 40px;
+            margin-bottom: 8px;
+        }
+
+        /* アニメーション用クラス */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .delay-1 {
+            transition-delay: 0.1s;
+        }
+
+        .delay-2 {
+            transition-delay: 0.2s;
+        }
+
+        .delay-3 {
+            transition-delay: 0.3s;
+        }
+
+        .delay-4 {
+            transition-delay: 0.4s;
+        }
+
+        .delay-5 {
+            transition-delay: 0.5s;
+        }
+
+        /* フッター */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+            border-top: 1px solid var(--card-border);
+            margin-top: 40px;
+            font-size: 14px;
+        }
+
+        /* レスポンシブ */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 背景装飾 -->
+    <div class="bg-blob blob-1"></div>
+    <div class="bg-blob blob-2"></div>
+
+    <!-- ナビゲーション -->
+    <nav>
+        <div class="nav-links">
+            <a href="../index.html">← Home</a>
+            <a href="#mutual-links">相互リンク一覧</a>
+        </div>
+        <button id="theme-toggle" aria-label="テーマ切り替え" class="theme-toggle">
+            <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+        </button>
+    </nav>
+
+    <!-- 相互リンクについて -->
+    <section id="about-mutual" style="padding-top: 150px; min-height: auto; padding-bottom: 40px;">
+        <h1 class="section-title fade-in" style="font-size: 48px; margin-bottom: 24px;">相互リンク</h1>
+        <div class="glass-card fade-in delay-1" style="max-width: 800px; margin: 0 auto; text-align: center;">
+            <p style="font-size: 18px; margin-bottom: 16px;">相互リンク随時募集中です！</p>
+            <p style="color: var(--text-muted); margin-bottom: 32px;">ご希望の方は、𝕏(Twitter)のDMなどでお気軽にお声がけください。</p>
+            <a href="https://twitter.com/kotosan_dayo" target="_blank" class="btn">𝕏 (Twitter) を開く</a>
+        </div>
+    </section>
+
+    <!-- リンク用素材 (リンクを貼ってくださる方へ) -->
+    <section id="link-kit" style="padding-top: 60px; min-height: auto; padding-bottom: 80px;">
+        <h2 class="section-title fade-in" style="font-size: 36px; margin-bottom: 40px;">リンク用素材</h2>
+        <div class="links-grid" style="max-width: 900px; margin: 0 auto;">
+
+            <!-- Images Card -->
+            <div class="glass-card fade-in delay-1" style="text-align: left; padding: 32px;">
+                <h3
+                    style="font-size: 24px; margin-bottom: 24px; border-bottom: 2px solid var(--card-border); padding-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+                    🖼️ Images</h3>
+
+                <div style="margin-bottom: 24px;">
+                    <p style="color: var(--text-muted); margin-bottom: 32px;">相互リンク用の画像です。DL、編集などしてくださっても大丈夫です！</p>
+                    <h4 style="margin-bottom: 12px; color: var(--text-main); font-size: 16px;">アイコン</h4>
+                    <div style="display: flex; gap: 16px; align-items: center; margin-bottom: 12px;">
+                        <img src="https://github.com/kotosan-dayo/Kotosan-page/blob/main/images/tab%20icon.jpg?raw=true"
+                            alt="kotosan_dayo icon"
+                            style="width: 64px; height: 64px; border: 2px solid var(--card-border); box-shadow: var(--shadow);">
+                        <p style="font-size: 12px; color: var(--text-muted);">サイトのアイコンや、相互リンクの表示などにご自由にお使いください。</p>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 style="margin-bottom: 12px; color: var(--text-main); font-size: 16px;">バナー</h4>
+                    <div style="margin-bottom: 12px;">
+                        <img src="https://github.com/kotosan-dayo/Kotosan-page/blob/main/images/banner.jpg?raw=true"
+                            alt="kotosan_dayo banner"
+                            style="max-width: 100%; height: auto; border: 2px solid var(--card-border); box-shadow: var(--shadow); display: block;">
+                    </div>
+                    <p style="font-size: 12px; color: var(--text-muted);">サイトのバナーです。相互リンクの際などにご利用ください。</p>
+                </div>
+            </div>
+
+            <!-- Links Card -->
+            <div class="glass-card fade-in delay-2" style="text-align: left; padding: 32px;">
+                <h3
+                    style="font-size: 24px; margin-bottom: 24px; border-bottom: 2px solid var(--card-border); padding-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+                    🔗 Links</h3>
+
+                <div style="margin-bottom: 24px;">
+                    <h4 style="margin-bottom: 8px; color: var(--text-main); font-size: 16px;">ホームページURL</h4>
+                    <input type="text" value="https://kotosan-dayo.github.io/Kotosan-page/" readonly
+                        style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--card-border); background: transparent; color: var(--text-main); font-family: monospace; font-size: 14px; outline: none; margin-bottom: 8px; cursor: pointer;"
+                        onclick="navigator.clipboard.writeText(this.value); const p = this.nextElementSibling; p.innerText = '✓ コピーしました！'; p.style.color = 'var(--primary)'; setTimeout(() => { p.innerText = '当サイトのトップページです。クリックでコピーできます。'; p.style.color = 'var(--text-muted)'; }, 2000);">
+                    <p style="font-size: 12px; color: var(--text-muted); transition: color 0.3s;">
+                        当サイトのトップページです。クリックでコピーできます。</p>
+                </div>
+
+                <div>
+                    <h4 style="margin-bottom: 8px; color: var(--text-main); font-size: 16px;">𝕏 (Twitter)</h4>
+                    <input type="text" value="https://twitter.com/kotosan_dayo" readonly
+                        style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--card-border); background: transparent; color: var(--text-main); font-family: monospace; font-size: 14px; outline: none; margin-bottom: 8px; cursor: pointer;"
+                        onclick="navigator.clipboard.writeText(this.value); const p = this.nextElementSibling; p.innerText = '✓ コピーしました！'; p.style.color = 'var(--primary)'; setTimeout(() => { p.innerText = 'メインアカウントへのリンクです。クリックでコピーできます。'; p.style.color = 'var(--text-muted)'; }, 2000);">
+                    <p style="font-size: 12px; color: var(--text-muted); transition: color 0.3s;">
+                        メインアカウントへのリンクです。クリックでコピーできます。</p>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="fade-in delay-3" style="text-align: center; margin-top: 32px;">
+            <p style="font-size: 14px; color: var(--text-muted);">当サイトへのリンクはフリーですが、相互リンクをご希望の場合はDM等でご連絡ください！</p>
+        </div>
+    </section>
+
+
+    <!-- 相互リンク一覧 -->
+    <section id="mutual-links" style="padding-top: 40px;">
+        <h1 class="section-title fade-in" style="font-size: 48px; margin-bottom: 24px;">相互リンク一覧</h1>
+        <div class="links-grid">
+            <a href="https://site.l-ituki8000.workers.dev/" target="_blank"
+                class="glass-card link-card fade-in delay-1">
+                <div class="link-icon"><img
+                        src="https://github.com/kotosan-dayo/Kotosan-page/blob/main/images/ituki%20slink.png?raw=true"
+                        alt="ituki slink" style="max-width: 70%; border-radius: 6px;">
+                </div>
+                <h4>いつきのホームページ</h4>
+                <p style="font-size: 12px; color: var(--text-muted);">𝕏:@L_port8000</p>
+            </a>
+
+            <a href="https://kanade202507.kanade1120.workers.dev" target="_blank"
+                class="glass-card link-card fade-in delay-2">
+                <div class="link-icon"><img
+                        src="https://github.com/kotosan-dayo/Kotosan-page/blob/main/images/Kanade%20slink.jpg?raw=true"
+                        alt="kanade slink" style="max-width: 30%; border-radius: 6px;">
+                </div>
+                <h4>Kanade</h4>
+                <p style="font-size: 12px; color: var(--text-muted);">𝕏:@kanade202507</p>
+            </a>
+
+            <a href="https://marunoringo8.blogspot.com/" target="_blank" class="glass-card link-card fade-in delay-3">
+                <div class="link-icon"><img
+                        src="https://github.com/kotosan-dayo/Kotosan-page/blob/main/images/marunoringo%20slink.jpg?raw=true"
+                        alt="marunoringo slink" style="max-width: 30%; border-radius: 6px;">
+                </div>
+                <h4>マルノリンゴ</h4>
+                <p style="font-size: 12px; color: var(--text-muted);">𝕏:@marunoringo8</p>
+            </a>
+
+            <a href="https://soichi-portfolio.soichi1208.workers.dev/" target="_blank"
+                class="glass-card link-card fade-in delay-4">
+                <div class="link-icon"><img
+                        src="https://github.com/kotosan-dayo/Kotosan-page/blob/main/images/soichi%20slink.png?raw=true"
+                        alt="soichi slink" style="max-width: 70%; border-radius: 6px;">
+                </div>
+                <h4>soichi</h4>
+                <p style="font-size: 12px; color: var(--text-muted);">𝕏:@soichi1208tenko</p>
+            </a>
+
+            <a href="https://drsb.f5.si/" target="_blank" class="glass-card link-card fade-in delay-5">
+                <div class="link-icon"><img
+                        src="https://github.com/kotosan-dayo/Kotosan-page/blob/main/images/yu-%20slink.JPG?raw=true"
+                        alt="yu- slink" style="max-width: 30%; border-radius: 6px;">
+                </div>
+                <h4>Jüw's Page</h4>
+                <p style="font-size: 12px; color: var(--text-muted);">𝕏:@dragon_scratch_</p>
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <p>kotosan page ver.3</p>
+        <p>© 2026 kotosan. All rights reserved.</p>
+    </footer>
+
+    <!-- スクロールアニメーション用スクリプト -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            document.querySelectorAll('.fade-in').forEach((el) => {
+                observer.observe(el);
+            });
+
+            // テーマ切り替え
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+            const currentTheme = localStorage.getItem("theme");
+
+            // 初期テーマの適用
+            if (currentTheme === "dark") {
+                document.documentElement.setAttribute("data-theme", "dark");
+            } else if (currentTheme === "light") {
+                document.documentElement.setAttribute("data-theme", "light");
+            } else if (prefersDarkScheme.matches) {
+                document.documentElement.setAttribute("data-theme", "dark");
+            } else {
+                document.documentElement.setAttribute("data-theme", "light");
+            }
+
+            // トグルボタンのクリックイベント
+            themeToggleBtn.addEventListener("click", () => {
+                let theme = document.documentElement.getAttribute("data-theme");
+                if (theme === "dark") {
+                    document.documentElement.setAttribute("data-theme", "light");
+                    localStorage.setItem("theme", "light");
+                } else {
+                    document.documentElement.setAttribute("data-theme", "dark");
+                    localStorage.setItem("theme", "dark");
+                }
+            });
+
+            // システムのテーマ変更を検知
+            prefersDarkScheme.addEventListener("change", (e) => {
+                if (!localStorage.getItem("theme")) {
+                    if (e.matches) {
+                        document.documentElement.setAttribute("data-theme", "dark");
+                    } else {
+                        document.documentElement.setAttribute("data-theme", "light");
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
