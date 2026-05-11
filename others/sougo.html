@@ -319,10 +319,29 @@
             font-size: 14px;
         }
 
+        .mobile-home-btn {
+            display: none;
+            position: absolute;
+            left: 20px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .mobile-home-btn:hover {
+            color: var(--primary);
+        }
+
         /* レスポンシブ */
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
+            }
+
+            .mobile-home-btn {
+                display: block;
             }
 
             .section-title {
@@ -340,6 +359,7 @@
 
     <!-- ナビゲーション -->
     <nav>
+        <a href="../index.html" class="mobile-home-btn">← Home</a>
         <div class="nav-links">
             <a href="../index.html">← Home</a>
             <a href="#mutual-links">相互リンク一覧</a>
@@ -376,7 +396,7 @@
 
     <!-- リンク用素材 (リンクを貼ってくださる方へ) -->
     <section id="link-kit" style="padding-top: 60px; min-height: auto; padding-bottom: 80px;">
-        <h2 class="section-title fade-in" style="font-size: 36px; margin-bottom: 40px;">リンク用素材</h2>
+        <h2 class="section-title fade-in" style="font-size: 36px; margin-bottom: 40px;">相互リンク用素材</h2>
         <div class="links-grid" style="max-width: 900px; margin: 0 auto;">
 
             <!-- Images Card -->
