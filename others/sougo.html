@@ -277,6 +277,26 @@
             margin-bottom: 8px;
         }
 
+        .link-comment {
+            margin-top: auto;
+            font-size: 13px;
+            color: var(--text-muted);
+            background: rgba(128, 128, 128, 0.05);
+            padding: 8px 12px;
+            border-radius: 12px;
+            border: 1px dashed var(--card-border);
+            width: 100%;
+            text-align: center;
+            word-break: break-all;
+            transition: all 0.3s ease;
+        }
+
+        .link-card:hover .link-comment {
+            background: rgba(128, 128, 128, 0.12);
+            color: var(--text-main);
+            border-style: solid;
+        }
+
         /* アニメーション用クラス */
         .fade-in {
             opacity: 0;
@@ -396,7 +416,7 @@
 
     <!-- リンク用素材 (リンクを貼ってくださる方へ) -->
     <section id="link-kit" style="padding-top: 60px; min-height: auto; padding-bottom: 80px;">
-        <h2 class="section-title fade-in" style="font-size: 36px; margin-bottom: 40px;">相互リンク用素材</h2>
+        <h2 class="section-title fade-in" style="font-size: 36px; margin-bottom: 40px;">リンク用素材</h2>
         <div class="links-grid" style="max-width: 900px; margin: 0 auto;">
 
             <!-- Images Card -->
@@ -472,6 +492,7 @@
                 </div>
                 <h4>いつきのホームページ</h4>
                 <p style="font-size: 12px; color: var(--text-muted);">𝕏:@L_port8000</p>
+                <div class="link-comment">いろんなこと知っててすごい！！あと結構古参の方！！</div>
             </a>
 
             <a href="https://kanade202507.kanade1120.workers.dev" target="_blank"
@@ -482,6 +503,7 @@
                 </div>
                 <h4>Kanade</h4>
                 <p style="font-size: 12px; color: var(--text-muted);">𝕏:@kanade202507</p>
+                <div class="link-comment">いつもなかよくしてくれるとっても優しい人！！！！</div>
             </a>
 
             <a href="https://marunoringo8.blogspot.com/" target="_blank" class="glass-card link-card fade-in delay-3">
@@ -491,6 +513,7 @@
                 </div>
                 <h4>マルノリンゴ</h4>
                 <p style="font-size: 12px; color: var(--text-muted);">𝕏:@marunoringo8</p>
+                <div class="link-comment">最近浮上してない方大丈夫かな、、、</div>
             </a>
 
             <a href="https://soichi-portfolio.soichi1208.workers.dev/" target="_blank"
@@ -501,6 +524,7 @@
                 </div>
                 <h4>soichi</h4>
                 <p style="font-size: 12px; color: var(--text-muted);">𝕏:@soichi1208tenko</p>
+                <div class="link-comment">東方好き東方好き東方好き東方好きな人！！！！！</div>
             </a>
 
             <a href="https://drsb.f5.si/" target="_blank" class="glass-card link-card fade-in delay-5">
@@ -510,6 +534,7 @@
                 </div>
                 <h4>Jüw's Page</h4>
                 <p style="font-size: 12px; color: var(--text-muted);">𝕏:@dragon_scratch_</p>
+                <div class="link-comment">サイトのデザインがすごくいい！あとアイコンがかわいすぎる</div>
             </a>
         </div>
     </section>
