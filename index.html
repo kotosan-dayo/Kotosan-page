@@ -521,6 +521,164 @@
                 width: 100%;
             }
         }
+
+        /* --- フォロワー目標ゲージのスタイル --- */
+        .gauge-container {
+            width: 100%;
+            margin-top: auto;
+            /* リンクボックスの一番下に配置 */
+            padding-top: 12px;
+            /* 上のテキストとの間隔 */
+            text-align: left;
+            transition: all 0.3s ease;
+        }
+
+        .gauge-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+        }
+
+        .gauge-title {
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .gauge-bar-bg {
+            width: 100%;
+            height: 10px;
+            background: rgba(128, 128, 128, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(128, 128, 128, 0.05);
+        }
+
+        .gauge-bar-fill {
+            height: 100%;
+            width: 0%;
+            /* JSで動的に変更されます */
+            border-radius: 10px;
+            transition: width 1.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+            position: relative;
+        }
+
+        /* 𝕏メイン用：シルバー＆ブラック/ホワイトのグラデーション */
+        .gauge-bar-fill.x-main {
+            background: linear-gradient(90deg, #1da1f2, #0d8ecf);
+            box-shadow: 0 0 8px rgba(29, 161, 242, 0.5);
+        }
+
+        /* 𝕏鍵垢用：ゴールド〜ブロンズのグラデーション */
+        .gauge-bar-fill.x-key {
+            background: linear-gradient(90deg, #eab308, #ca8a04);
+            box-shadow: 0 0 8px rgba(234, 179, 8, 0.5);
+        }
+
+        /* note用：ブランドカラーのグリーン系グラデーション */
+        .gauge-bar-fill.note-blog {
+            background: linear-gradient(90deg, #00e096, #00b074);
+            box-shadow: 0 0 8px rgba(0, 224, 150, 0.5);
+        }
+
+        /* GitHub用（オプション/将来拡張用）：パープル＆ピンク */
+        .gauge-bar-fill.github {
+            background: linear-gradient(90deg, #a855f7, #ec4899);
+            box-shadow: 0 0 8px rgba(168, 85, 247, 0.5);
+        }
+
+        /* 目標達成・突破時の虹色ゲージ（流れるアニメーション付き） */
+        .gauge-bar-fill.rainbow {
+            background: linear-gradient(90deg, #ff007f, #ff0000, #ff7f00, #ffff00, #00ff00, #00ffff, #0000ff, #8b00ff, #ff007f);
+            background-size: 200% auto;
+            box-shadow: 0 0 12px rgba(255, 0, 127, 0.6);
+            animation: rainbow-shift 3s linear infinite;
+        }
+
+        @keyframes rainbow-shift {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            100% {
+                background-position: -200% 50%;
+            }
+        }
+
+        .gauge-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .gauge-numbers {
+            color: var(--text-muted);
+        }
+
+        .gauge-percent {
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--text-main), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* --- インライン編集スタイル --- */
+        .editable-count {
+            cursor: pointer;
+            position: relative;
+            padding: 1px 4px;
+            border-radius: 4px;
+            border-bottom: 1.5px dashed var(--text-muted);
+            transition: background 0.15s, border-color 0.15s;
+        }
+
+        .editable-count:hover {
+            background: rgba(var(--accent-rgb, 99, 102, 241), 0.12);
+            border-bottom-color: var(--primary);
+        }
+
+        .editable-count::after {
+            content: ' ✏️';
+            font-size: 9px;
+            opacity: 0;
+            transition: opacity 0.15s;
+        }
+
+        .editable-count:hover::after {
+            opacity: 1;
+        }
+
+        .inline-edit-input {
+            width: 60px;
+            font-size: 12px;
+            font-weight: 600;
+            font-family: inherit;
+            color: var(--text-main);
+            background: rgba(99, 102, 241, 0.15);
+            border: 1.5px solid var(--primary);
+            border-radius: 5px;
+            padding: 2px 6px;
+            outline: none;
+            text-align: center;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.18);
+        }
+
+        .inline-edit-hint {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-align: center;
+            margin-top: 6px;
+            opacity: 0.7;
+            letter-spacing: 0.03em;
+        }
     </style>
 </head>
 
@@ -537,7 +695,8 @@
             <a href="#news">News</a>
             <a href="#profile">Profile</a>
             <a href="#team">Gears</a>
-            <a href="#links">Links & Tools</a>
+            <a href="#sns">SNS</a>
+            <a href="#tools">Tools</a>
             <a href="#mutual-links">相互リンク</a>
             <a href="#archives">Archives</a>
         </div>
@@ -693,35 +852,101 @@
         </div>
     </section>
 
-    <!-- リンク・ツールセクション -->
-    <section id="links">
-        <h2 class="section-title fade-in">Links & Tools</h2>
+    <!-- SNSセクション -->
+    <section id="sns">
+        <h2 class="section-title fade-in">SNS Accounts</h2>
         <div class="links-grid">
-            <a href="https://twitter.com/kotosan_dayo" target="_blank" class="glass-card link-card fade-in delay-1">
-                <div class="link-icon">𝕏</div>
-                <h4>メインアカウント</h4>
-                <p style="font-size: 12px; color: var(--text-muted);">@kotosan_dayo</p>
-            </a>
-            <a href="https://twitter.com/kotosan_key" target="_blank" class="glass-card link-card fade-in delay-1">
-                <div class="link-icon">🔒</div>
-                <h4>鍵アカウント</h4>
-                <p>FFさんならほぼ通します！！内通厳禁で！！</p>
-                <p style="font-size: 12px; color: var(--text-muted);">@kotosan_key</p>
-            </a>
-            <a href="https://note.com/kotosan_dayo" target="_blank" class="glass-card link-card fade-in delay-1">
-                <div class="link-icon">blog</div>
-                <h4>blog</h4>
-                <p>投稿頻度は非常に少ないです</p>
-                <p style="font-size: 12px; color: var(--text-muted);">外部リンクに飛びます</p>
-            </a>
+            <div class="glass-card link-card fade-in delay-1"
+                style="display: flex; flex-direction: column; align-items: center; text-align: center; text-decoration: none; color: var(--text-main); gap: 12px; padding: 32px 24px;">
+                <a href="https://twitter.com/kotosan_dayo" target="_blank"
+                    style="text-decoration: none; color: inherit; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 12px;">
+                    <div class="link-icon">𝕏</div>
+                    <h4>メインアカウント</h4>
+                    <p style="font-size: 14px; margin: 4px 0;">よかったらふぉろーしてねー</p>
+                    <p style=" font-size: 12px; color: var(--text-muted);">@kotosan_dayo</p>
+                </a>
+
+                <!-- フォロワー進捗ゲージ -->
+                <div class="gauge-container" id="gauge-x-main">
+                    <div class="gauge-header">
+                        <span class="gauge-title">𝕏 Followers</span>
+                    </div>
+                    <div class="gauge-bar-bg">
+                        <div class="gauge-bar-fill x-main" id="bar-xMain"></div>
+                    </div>
+                    <div class="gauge-footer">
+                        <span class="gauge-numbers"><span id="current-xMain">0</span> / <span
+                                id="target-xMain">0</span></span>
+                        <span class="gauge-percent" id="percent-xMain">0%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card link-card fade-in delay-1"
+                style="display: flex; flex-direction: column; align-items: center; text-align: center; text-decoration: none; color: var(--text-main); gap: 12px; padding: 32px 24px;">
+                <a href="https://twitter.com/kotosan_key" target="_blank"
+                    style="text-decoration: none; color: inherit; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 12px;">
+                    <div class="link-icon">🔒</div>
+                    <h4>鍵アカウント</h4>
+                    <p style="font-size: 14px; margin: 4px 0;">FFさんならほぼ通します！！内通厳禁で！！</p>
+                    <p style="font-size: 12px; color: var(--text-muted);">@kotosan_key</p>
+                </a>
+
+                <!-- フォロワー進捗ゲージ -->
+                <div class="gauge-container" id="gauge-x-key">
+                    <div class="gauge-header">
+                        <span class="gauge-title">🔒 Followers</span>
+                    </div>
+                    <div class="gauge-bar-bg">
+                        <div class="gauge-bar-fill x-key" id="bar-xKey"></div>
+                    </div>
+                    <div class="gauge-footer">
+                        <span class="gauge-numbers"><span id="current-xKey">0</span> / <span
+                                id="target-xKey">0</span></span>
+                        <span class="gauge-percent" id="percent-xKey">0%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card link-card fade-in delay-1"
+                style="display: flex; flex-direction: column; align-items: center; text-align: center; text-decoration: none; color: var(--text-main); gap: 12px; padding: 32px 24px;">
+                <a href="https://note.com/kotosan_dayo" target="_blank"
+                    style="text-decoration: none; color: inherit; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 12px;">
+                    <div class="link-icon">blog</div>
+                    <h4>blog</h4>
+                    <p style="font-size: 14px; margin: 4px 0;">投稿頻度は非常に少ないです</p>
+                </a>
+
+                <!-- フォロワー進捗ゲージ -->
+                <div class="gauge-container" id="gauge-note-blog">
+                    <div class="gauge-header">
+                        <span class="gauge-title">note Followers</span>
+                    </div>
+                    <div class="gauge-bar-bg">
+                        <div class="gauge-bar-fill note-blog" id="bar-noteBlog"></div>
+                    </div>
+                    <div class="gauge-footer">
+                        <span class="gauge-numbers"><span id="current-noteBlog">0</span> / <span
+                                id="target-noteBlog">0</span></span>
+                        <span class="gauge-percent" id="percent-noteBlog">0%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ツール・その他セクション -->
+    <section id="tools">
+        <h2 class="section-title fade-in">Tools</h2>
+        <div class="links-grid">
             <a href="https://kotosan-dayo.github.io/tag-counter/" target="_blank"
-                class="glass-card link-card fade-in delay-3">
+                class="glass-card link-card fade-in delay-1">
                 <div class="link-icon">🔢</div>
                 <h4>タグカウンター</h4>
                 <p style="font-size: 12px; color: var(--text-muted);">Webツール</p>
             </a>
             <a href="https://kotosan-dayo.github.io/koto-paint/" target="_blank"
-                class="glass-card link-card fade-in delay-3">
+                class="glass-card link-card fade-in delay-2">
                 <div class="link-icon">🎨</div>
                 <h4>Koto paint</h4>
                 <p style="font-size: 12px; color: var(--text-muted);">Webペイントアプリ</p>
@@ -741,7 +966,6 @@
                 </div>
                 <h4>いつきのホームページ</h4>
                 <p style="font-size: 12px; color: var(--text-muted);">𝕏:@L_port8000</p>
-                <div class="link-comment">いろんなこと知っててすごい！！あと結構古参の方！！</div>
             </a>
 
             <a href="https://kanade202507.kanade1120.workers.dev" target="_blank"
@@ -752,7 +976,6 @@
                 </div>
                 <h4>Kanade</h4>
                 <p style="font-size: 12px; color: var(--text-muted);">𝕏:@kanade202507</p>
-                <div class="link-comment">いつもなかよくしてくれるとっても優しい人！！！！</div>
             </a>
 
             <a href="https://marunoringo8.blogspot.com/" target="_blank" class="glass-card link-card fade-in delay-3">
@@ -762,7 +985,6 @@
                 </div>
                 <h4>マルノリンゴ</h4>
                 <p style="font-size: 12px; color: var(--text-muted);">𝕏:@marunoringo8</p>
-                <div class="link-comment">最近浮上してない方大丈夫かな、、、</div>
             </a>
 
             <a href="https://soichi-portfolio.soichi1208.workers.dev/" target="_blank"
@@ -773,7 +995,6 @@
                 </div>
                 <h4>soichi</h4>
                 <p style="font-size: 12px; color: var(--text-muted);">𝕏:@soichi1208tenko</p>
-                <div class="link-comment">東方好き東方好き東方好き東方好きな人！！！！！</div>
             </a>
 
             <a href="https://drsb.f5.si/" target="_blank" class="glass-card link-card fade-in delay-3">
@@ -783,9 +1004,17 @@
                 </div>
                 <h4>Jüw's Page</h4>
                 <p style="font-size: 12px; color: var(--text-muted);">𝕏:@dragon_scratch_</p>
-                <div class="link-comment">サイトのデザインがすごくいい！あとアイコンがかわいすぎる</div>
+            </a>
+
+            <a href="https://kzng.f5.si/" target="_blank" class="glass-card link-card fade-in delay-3">
+                <div class="link-icon"><img src="https://kzng.f5.si/Banner.png" alt="yu-makuro slink"
+                        style="max-width: 80%; border-radius: 6px;">
+                </div>
+                <h4>風止渚</h4>
+                <p style="font-size: 12px; color: var(--text-muted);">𝕏:@makur0gaku</p>
             </a>
         </div>
+
         <div style="text-align: center; margin-top: 48px;" class="fade-in delay-2">
             <a href="./others/sougo.html" class="btn btn-outline">相互リンク募集中！！ →</a>
         </div>
@@ -831,6 +1060,39 @@
             document.querySelectorAll('.fade-in').forEach((el) => {
                 observer.observe(el);
             });
+
+            // --- フォロワー進捗ゲージ ---
+            // ※ことさんへ: フォロワー数を変更したいときはここの数字を書き換えてください！
+            const DEFAULT_FOLLOWERS = {
+                xMain: { current: 800, target: 1000 },
+                xKey: { current: 70, target: 100 },
+                noteBlog: { current: 8, target: 20 }
+            };
+
+            function updateGauges() {
+                Object.keys(DEFAULT_FOLLOWERS).forEach(key => {
+                    const { current, target } = DEFAULT_FOLLOWERS[key];
+
+                    document.getElementById(`current-${key}`).innerText = current.toLocaleString();
+                    document.getElementById(`target-${key}`).innerText = target.toLocaleString();
+
+                    const percent = target > 0 ? Math.round((current / target) * 100) : 0;
+                    document.getElementById(`percent-${key}`).innerText = `${percent}%`;
+
+                    const barFill = document.getElementById(`bar-${key}`);
+                    if (barFill) {
+                        if (percent >= 100) {
+                            barFill.classList.add('rainbow');
+                        } else {
+                            barFill.classList.remove('rainbow');
+                        }
+                        const drawPercent = Math.min(percent, 100);
+                        setTimeout(() => { barFill.style.width = `${drawPercent}%`; }, 200);
+                    }
+                });
+            }
+
+            updateGauges();
 
             // テーマ切り替え
             const themeToggleBtn = document.getElementById('theme-toggle');
